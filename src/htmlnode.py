@@ -58,3 +58,23 @@ class ParentNode(HTMLNode):
             return f'<{self.tag} {attributes}>{children_html}</{self.tag}>'
         else:
             return f'<{self.tag}>{children_html}</{self.tag}>'
+
+def text_node_to_html_node(text_node):
+    if text_node.text_type == "text":
+        return LeafNode(tag=None, value=text_node.text)
+    elif text_node.text_type == "bold":
+        return LeafNode(tag="b", value=text_node.text)
+    elif text_node.text_type == "italic":
+        return LeafNode(tag="i", value=text_node.text)
+    elif text_node.text_type == "code":
+        return LeafNode(tag="code", value=text_node.text)
+    elif text_node.text_type == "link":
+        if text_node.url is None:
+            raise ValueError("Link type TextNode must have a URL")
+        return LeafNode(tag="a", value=text_node.text, props={"href": text_node.url})
+    elif text_node.text_type == "image":
+        if text_node.url is None or text_node.alt is None:
+            raise ValueError("Image type TextNode must have a URL and alt text")
+        return LeafNode(tag="img", value="", props={"src": text_node.url, "alt": text_node.alt})
+    else:
+        raise ValueError(f"Unknown text type: {text_node.text_type}")

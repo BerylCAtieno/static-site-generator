@@ -3,6 +3,8 @@ import unittest
 from htmlnode import HTMLNode
 from htmlnode import LeafNode
 from htmlnode import ParentNode
+from textnode import TextNode
+from htmlnode import text_node_to_html_node
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -124,6 +126,41 @@ class TestHTMLNode(unittest.TestCase):
         )
         expected_output = '<p class="text-class"><b>Bold text</b>Normal text</p>'
         self.assertEqual(node.to_html(), expected_output)
+    
+    def test_text_node(self):
+        text_node = TextNode("text", "Just some text")
+        html_node = text_node_to_html_node(text_node)
+        self.assertEqual(html_node.to_html(), "Just some text")
+
+    def test_bold_node(self):
+        text_node = TextNode("bold", "Bold text")
+        html_node = text_node_to_html_node(text_node)
+        self.assertEqual(html_node.to_html(), "<b>Bold text</b>")
+
+    def test_italic_node(self):
+        text_node = TextNode("italic", "Italic text")
+        html_node = text_node_to_html_node(text_node)
+        self.assertEqual(html_node.to_html(), "<i>Italic text</i>")
+
+    def test_code_node(self):
+        text_node = TextNode("code", "Code text")
+        html_node = text_node_to_html_node(text_node)
+        self.assertEqual(html_node.to_html(), "<code>Code text</code>")
+
+    def test_link_node(self):
+        text_node = TextNode("link", "Click me", url="https://www.google.com")
+        html_node = text_node_to_html_node(text_node)
+        self.assertEqual(html_node.to_html(), '<a href="https://www.google.com">Click me</a>')
+
+    def test_image_node(self):
+        text_node = TextNode("image", "", url="https://www.example.com/image.jpg", alt="Example image")
+        html_node = text_node_to_html_node(text_node)
+        self.assertEqual(html_node.to_html(), '<img src="https://www.example.com/image.jpg" alt="Example image">')
+
+    def test_unknown_type(self):
+        text_node = TextNode("unknown", "Unknown text")
+        with self.assertRaises(ValueError):
+            text_node_to_html_node(text_node)
 
 
 if __name__ == '__main__':
