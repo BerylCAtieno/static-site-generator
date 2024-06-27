@@ -11,15 +11,15 @@ class HTMLNode:
     def props_to_html(self):
         if not self.props:
             return ''
-        attributes = [f' {key}="{value}"' for key, value in self.props.items()]
-        return ''.join(attributes)
+        attributes = [f'{key}="{value}"' for key, value in self.props.items()]
+        return ' '.join(attributes)
 
     def __repr__(self):
         return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
 
 
 class LeafNode(HTMLNode):
-    def __init__(self, tag=None, value=None, props=None):
+    def __init__(self, tag:str=None, value:str=None, props:dict=None):
         super().__init__(tag, value, None, props)
 
     def to_html(self):
