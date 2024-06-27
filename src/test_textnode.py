@@ -11,7 +11,7 @@ class TestTextNode(unittest.TestCase):
 
     def test_repr(self):
         node_obj = TextNode("The text", "italic", "link.com")
-        expected_repr = 'TextNode("The text", "italic", "link.com")'
+        expected_repr = 'TextNode(The text, italic, link.com)'
 
         self.assertEqual(repr(node_obj), expected_repr)
 
